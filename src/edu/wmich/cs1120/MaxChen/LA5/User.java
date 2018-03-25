@@ -6,7 +6,7 @@ public class User {
 	public String password;
 	public int id;
 	public int i=0;
-	Item[] library = new Item[100];
+	CartItem[] library = new CartItem[3];
 	public User(int id, String username, String password) {
 		this.username = username;
 		this.password = password;
@@ -22,10 +22,22 @@ public class User {
 	 * @throws an appropriate exception if the user try to add more than three items to the cart list, and
 	 *  if there is a thrown exception from setQuantity method.
 	 */
-	public void addItemToTheLibrary(Item item, int quantity) throws InvalidInputException{	
-		
-		library[i] = item;
-	
+	public void addItemToTheLibrary(int id,Item item, int quantity){	
 		i++;
+		Lookup lookup = new Lookup();
+		
+		CartItem library = new CartItem(id, item);
+		
+		int q = library.setQuanytit(quantity);
+		if(q == 0) {
+				this.library[i-1] = library;
+				System.out.println("added "+quantity+" "+lookup.getnamebyid(id)+" to cart");
+			
+			
+		}
+		else {
+			System.out.println("The available quantity in the store is "+ lookup.getqbyid(id) + " flowers, and your ordered quantity is " + quantity + " flowers.");
+		
+		}
 	}
 }

@@ -15,6 +15,11 @@ public class Item {
 		this.availableQuantity = availableQuantity;
 		this.price = price;
 	}
+	
+	/**
+	 * @return return 1 item list
+	 * set up the item list as string
+	 */
 	public String toString(){
 		String Itemlist =  id + "-\t" + title + ",\t\t" + availableQuantity + " left\tprice: " + price;
 		return Itemlist;

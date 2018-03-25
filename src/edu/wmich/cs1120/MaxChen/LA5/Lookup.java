@@ -1,14 +1,17 @@
 package edu.wmich.cs1120.MaxChen.LA5;
+import java.util.regex.*;
 
 public class Lookup{
 	
 	public User[] userList;
 	public Item[] storeItemList;		
 	public int usernum = 2;
+	public String username;
 	
 	public Lookup() {		
 		userList = createUsers();
 		storeItemList = loadItems();
+		
 	}
 
 	/**
@@ -22,8 +25,10 @@ public class Lookup{
 	 * 2- Password doesn’t exist
 	 */	
 	public User checkLoginAuth(String userName, String password) {
+		
 		for ( int i = 0; i < usernum; i++) {
 			if (userList[i].username.equals(userName)  && userList[i].password.equals(password)){
+				username = userName;
 				return userList[i];
 		}
 		}
@@ -45,14 +50,43 @@ public class Lookup{
         * 6.     If the password is not valid
 	 * 
 	 */
-//	public User checkSignUpAuth(String userName, String password1, String password2) throws … {	
-//	}	
+	public User checkSignUpAuth(String userName, String password1, String password2) throws Exception {	
 	
-
-
-
-
-
+		
+		if (password1.equals(password2)) {
+			
+			for ( int i = 0; i < 10; i++) {
+				if (userList[i].username.equals(userName)) {
+					System.out.println("the user name is already exist.");
+					return null;
+				}
+				else if (password1.length() < 6){
+					System.out.println("password need to be 6 characters or longer.");
+					return null;
+				}
+				else if (isValidPassword(password1) == null) {
+					System.out.println("password is not valid");
+					return null;
+				}
+				else if (isValidPassword(password1) == password1){
+					
+					userList[usernum] = addUserToTheList(userName, password1);
+					
+					return userList[usernum-1];
+				}
+				else {
+					System.out.println("something wrong");
+					return null;
+				}
+			}
+		}
+		else if (password1 != password2){
+			System.out.println("first password have to match second password");
+			return null;
+			
+		}
+		return null;
+	}	
 	/**
 	 * The method checks if the password is valid or not:
 	 * password should contains:
@@ -64,9 +98,63 @@ public class Lookup{
 	 * @return: The method returns message error if the password is not valid,
 	 *  and returns null if the password is valid
 	 */
-	public String isValidPassword(String password){
+	public String isValidPassword(String password)
+	{
+		char character;
+		int digit = 0;
+		int upperCase = 0;
+		int lowerCase = 0;
+		int number = 0;
+		
+		Pattern charCheck = Pattern.compile("[a-zA-Z0-9]*");
+		Matcher match = charCheck.matcher(password);
+	 
+	      if (!match.matches()) {
+	           digit++;
+	      }
+
+		for(int i = 0; i < password.length(); i++)
+		{
+			character = password.charAt(i);
+			if(Character.isUpperCase(character))
+			{
+				upperCase++;
+			}
+			if(Character.isLowerCase(character))
+			{
+				lowerCase++;
+			}
+			if(Character.isDigit(character))
+			{
+				number++;
+			}
+		}
+		
+		if(digit == 0)
+		{
+			System.out.println("Must have one character.");
+			password = null;
+		}
+		if(upperCase == 0)
+		{
+			System.out.println("Must have one upper case.");
+			password = null;
+		}
+		if(lowerCase == 0)
+		{
+			System.out.println("Must have one lower case.");
+			password = null;
+		}
+		if(number == 0)
+		{
+			System.out.println("Must have one number.");
+			password = null;
+		}
+		
+		return password;
 	}
 	public User[] getUserList() {
+		return userList;
 	}
 
 	public void setUserList(User[] userList) {
@@ -80,6 +168,10 @@ public class Lookup{
 	 * @return user
 	 */
 	public User addUserToTheList(String userName, String password) {
+		usernum++;
+		User list = new User(usernum, userName, password);
+		return list;
+		
 	}
 	
 	/**
@@ -88,7 +180,7 @@ public class Lookup{
 	 * can add new users
 	 */
 	public User[] createUsers() {
-		User[] list = new User[2];
+		User[] list = new User[10];
 		
 		list[0] = new User(1, "sara", "123"); // Constructor’s arguments:  (id, username, password)
 		list[1] = new User(2, "adam", "321");
@@ -122,13 +214,43 @@ public class Lookup{
 	 * else return null 
 	 */
 	public void printflower() {
-		System.out.println(storeItemList.length);
+		
 		for (int i = 0; i < storeItemList.length; i++) {
 		System.out.println(storeItemList[i].toString());
 		}
 	}
-//	public Item getItemById(int key) {
-//		
-//	}
+	public Item getItemById(int key) {
+		for (int i = 0 ; i < 10; i++) {
+			if(key == storeItemList[i].id) {
+				return storeItemList[i];
+			}
+		}
+			return null;
+		}
+	public int getqbyid(int key) {
+		for (int i = 0 ; i < 10; i++) {
+			if(key == storeItemList[i].id) {
+		return storeItemList[i].availableQuantity;
+			}
+		}
+		return 0;
+	}
+	public double getpricebyid(int key) {
+		for (int i = 0 ; i < 10; i++) {
+			if(key == storeItemList[i].id) {
+				return storeItemList[i].price;
+			}
+		}
+		return 0;
+	}
+	public String getnamebyid(int key) {
+		
+		for (int i = 0 ; i < 10; i++) {
+			if(key == storeItemList[i].id) {
+		return storeItemList[i].title;
+			}
+		}
+		return "noo";
+	}
 }
 
