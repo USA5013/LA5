@@ -9,6 +9,7 @@ public class FlowerShop {
 	static User Users = new User();
 	public static CartItem cart;
 	private static int ii = 0;
+	private static String Username;
 	/**
 	 * @param args for main class
 	 * @throws IOException 
@@ -59,6 +60,7 @@ public class FlowerShop {
 				}
 				else {
 					System.out.println("signed up complete!");
+					
 				}
 			
 		    break;
@@ -94,6 +96,7 @@ public class FlowerShop {
 		}
 		else {
 			System.out.println("Login Successful!");
+			Username = username;
 			try {
 				mainMenu(lookup);
 			} catch (InvalidInputException e) {
@@ -168,20 +171,21 @@ public class FlowerShop {
 					int number = keyboard.nextInt();
 
 					if (id <= 10 && id >= 1) {
-					if (sameflower(id)) {
-						ii++;
-						if (ii<4) {
-							Users.addItemToTheLibrary(id,lookup.getItemById(id),number);
+						if (sameflower(id)) {
+							ii++;
+							if (ii<4) {
+								Users.addItemToTheLibrary(id,lookup.getItemById(id),number);
 						}
 					else {
 						System.out.println("You cannot have more than three different types of the flowers");
 						}
 					}
+					}
 					else {
 						System.out.println("This flower’s id is not existing!");
 					}
-			 }
-			 }
+			 
+					}
 				else if (yorn.equals("N")|| yorn.equals("N")){
 				}
 				else {
@@ -240,7 +244,7 @@ public class FlowerShop {
 				System.out.println("Do you want to purchase these items(Y,N)?");
 				String yorn = keyboard.next();
 				if(yorn.equals("Y")|| yorn.equals("y")){
-					FileManager bill = new FileManager(lookup.username);
+					FileManager bill = new FileManager(Username);
 					bill.createBillFile(tprice);
 					System.out.println("Your bill is available now!");
 					return bill;

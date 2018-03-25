@@ -6,10 +6,10 @@ import java.io.*;
 public class FileManager {
 	
 	// File name equals to username
-	private String fileName = "bill.txt";
+	private String fileName = "";
 	private double total;
 	public FileManager(String fileName) {
-		this.fileName = fileName;
+		this.fileName = fileName+".txt";
 	}
 	/**
 	 * @throws IOExceptions
